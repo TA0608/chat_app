@@ -42,40 +42,27 @@ public class MessageController {
      * @param model ビューにデータを渡すためのオブジェクト
      * @return 表示するHTMLテンプレートのパス
      */
-    @GetMapping("/rooms/{roomId}/messages")
-    public String showMessages(
-        @PathVariable("roomId") Integer roomId,
-        @AuthenticationPrincipal CustomUserDetail currentUser, 
-        Model model
-    ) {
-        // 1. ログイン中のユーザー情報を取得し、ビューに渡す（名前表示用など）
-        UserEntity user = userRepository.findById(currentUser.getId());
-        model.addAttribute("user", user);
 
-        // 2. ログインユーザーが参加しているルーム一覧を取得する
-        // 中間テーブルからユーザーIDを元にデータを検索
-        List<RoomUserEntity> roomUserEntities = roomUserRepository.findByUserId(currentUser.getId());
-        
-        // 中間テーブルのリストから、RoomEntity（ルーム本体）のリストに変換
-        List<RoomEntity> roomList = roomUserEntities.stream()
-            .map(RoomUserEntity::getRoom) // RoomUserEntityからRoomEntityを取り出す
-            .collect(Collectors.toList());
-        
-        // ルーム一覧をビューに渡す（サイドバーの表示用など）
-        model.addAttribute("rooms", roomList);
+  @GetMapping("/rooms/{roomId}/messages")
+  public String showMessages(@PathVariable("roomId") Integer roomId,@AuthenticationPrincipal CustomUserDetail currentUser, Model model){
+    UserEntity user = userRepository.findById(currentUser.getId());
+    model.addAttribute("user", user);
+    List<RoomUserEntity> roomUserEntities = roomUserRepository.findByUserId(currentUser.getId());
+    List<RoomEntity> roomList = roomUserEntities.stream()
+        .map(RoomUserEntity::getRoom)
+        .collect(Collectors.toList());
+    model.addAttribute("rooms", roomList);
 
-        // 3. メッセージ投稿用の空フォームオブジェクトをビューに渡す（th:object用）
-        model.addAttribute("messageForm", new MessageForm());
-        
-        // 4. 現在開いているルームIDをビューに渡す（投稿先URLの指定用など）
-        model.addAttribute("roomId", roomId);
+    model.addAttribute("messageForm", new MessageForm());
+    
+    RoomEntity room = roomRepository.findById(roomId);
+    model.addAttribute("room", room);
 
-       List<MessageEntity> messages = messageRepository.findByRoomId(roomId);
-       model.addAttribute("messages", messages);
-
-        // messages/index.html を表示
-        return "messages/index";
-    }
+    List<MessageEntity> messages = messageRepository.findByRoomId(roomId);
+    model.addAttribute("messages", messages);
+    return "messages/index";
+  }
+    
     @PostMapping("/rooms/{roomId}/messages")
     public String saveMessage(@PathVariable("roomId") Integer roomId, @ModelAttribute("messageForm") MessageForm messageForm, @AuthenticationPrincipal CustomUserDetail currentUser) {
 
@@ -94,5 +81,4 @@ public class MessageController {
       }
       return "redirect:/rooms/" + roomId + "/messages";
     }
-    
 }
