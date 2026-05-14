@@ -33,7 +33,7 @@ public class MessageController {
     private final RoomUserRepository roomUserRepository;
     private final RoomRepository roomRepository;
 
-  private final MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     /**
      * メッセージ一覧画面を表示する
@@ -69,6 +69,9 @@ public class MessageController {
         
         // 4. 現在開いているルームIDをビューに渡す（投稿先URLの指定用など）
         model.addAttribute("roomId", roomId);
+
+       List<MessageEntity> messages = messageRepository.findByRoomId(roomId);
+       model.addAttribute("messages", messages);
 
         // messages/index.html を表示
         return "messages/index";
