@@ -3,29 +3,20 @@
 <div th:fragment="side_bar">
   <div class="side-bar-header">
     <div class="header-name">
-       <a th:href="@{/users/{userId}/edit(userId=${user.id})}" th:text="${user.name}">ユーザー名</a>
+      <a th:href="@{/users/{userId}/edit(userId=${user.id})}" th:text="${user.name}">ユーザー名</a>
     </div>
     <div class="create-room">
-      <a href="#">チャットを作成する</a>
+      <a th:href="@{/rooms/new}">チャットを作成する</a>
     </div>
   </div>
   
   <div class="rooms">
-        <div class="room">
+    <div th:each="room : ${rooms}"  class="room">
       <div class="room-name">
-        <a href="#">techroom1</a>
-      </div>
-    </div>
-    <div class="room">
-      <div class="room-name">
-        <a href="#">techroom2</a>
+        <a href="#" th:text="${room.name}">techroom</a>
       </div>
     </div>
   </div>
 </div>
 </html> 
- 
- 
- 
- 
  
