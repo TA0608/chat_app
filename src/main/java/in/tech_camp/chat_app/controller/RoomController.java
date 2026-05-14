@@ -24,6 +24,8 @@ import in.tech_camp.chat_app.repository.RoomUserRepository;
 import in.tech_camp.chat_app.repository.UserRepository;
 import in.tech_camp.chat_app.validation.ValidationOrder;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @AllArgsConstructor
@@ -118,4 +120,11 @@ public class RoomController {
         model.addAttribute("rooms", roomList);
         return "rooms/index";
     }
+
+    @PostMapping("/rooms/{roomId}/delete")
+    public String deleteRoom(@PathVariable (value = "roomId") Integer roomId) {
+        roomRepository.deleteById(roomId);
+        return "redirect:/" ;  
+    }
+    
 }
