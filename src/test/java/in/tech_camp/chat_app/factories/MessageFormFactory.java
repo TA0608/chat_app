@@ -6,7 +6,7 @@ import com.github.javafaker.Faker;
 
 import in.tech_camp.chat_app.form.MessageForm;
 
-public class MessageFromFactory {
+public class MessageFormFactory {
   private static final Faker faker = new Faker();
 
   public static MessageForm createMessage() {

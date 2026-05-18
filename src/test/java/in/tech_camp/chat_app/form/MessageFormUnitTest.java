@@ -12,7 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
 
-import in.tech_camp.chat_app.factories.MessageFromFactory;
+import in.tech_camp.chat_app.factories.MessageFormFactory;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -22,7 +22,7 @@ public class MessageFormUnitTest {
 
   @BeforeEach
   public void setUp() {
-    messageForm = MessageFromFactory.createMessage();
+    messageForm = MessageFormFactory.createMessage();
     bindingResult = Mockito.mock(BindingResult.class);
   }
 

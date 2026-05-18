@@ -99,6 +99,7 @@ public class UserController {
         if (error != null){
             model.addAttribute("loginError","Invalid email or password.");
         }
+        model.addAttribute("loginForm", new LoginForm());
         return "users/login";
     }
 
